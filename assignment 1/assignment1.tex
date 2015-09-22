@@ -1,0 +1,52 @@
+\input{/home/roel/Documents/preamble.tex}
+\begin{document}
+\maketitle[]{Assignment 1}
+\section{}
+We discretize the first-order spatial derivative using
+\begin{align}
+  \pdrv{x}u(t) = D_0(I-\frac{h^2}{6}D_+D_-).\nn
+\end{align}
+Where we define
+\begin{align}
+  D_0u = \frac{u_+-u_-}{2h},\nn %use v?
+  D_+D_-u = \frac{u_+-2u+u_-}{h^2}.
+\end{align}
+Therefore
+\begin{align}
+  \pdrv{x}u(t) = \frac{1}{12h}\left[(u_{++}-u_{--})-8(u_+-u_-)\right]
+\end{align}
+
+\subsection{}
+We have
+\begin{align}
+  \pdrv{t}u(t) = \frac{1}{12h}\left[-(u_{++}-u_{--})+8(u_+-u_-)\right]
+\end{align}
+Which in Fourier space gives
+\begin{align}
+  \pdrv[t]{\hat u(t)} &= \frac{\hat u}{12h}\left[(e^{2h\omega}-e^{-2h\omega})-8(e^{h\omega}-e^{-h\omega})\right],\nn
+  &= \frac{i}{6h}\left[-\sin(2h\omega)+8\sin(h\omega)\right]\hat u\nn
+  &= \hat P \hat u
+\end{align}
+We know that wave speed $V_\omega$ is given by
+\begin{align}
+  V_\omega = \frac{\hat P}{i\omega}
+\end{align}
+therefore
+\begin{align}
+ \Aboxed{V_\omega = \frac{1}{6h\omega}\left[-\sin(2h\omega)+8\sin(h\omega)\right]} %also plot error
+\end{align}
+\begin{figure}
+\centering
+\input{img/wavespeed.tex}
+\caption{The wavespeed as a function of $h\omega$ from $0$ to $\pi$.}
+\end{figure}
+
+\subsection{}
+The pointwise error is defined as
+\begin{align}
+\epsilon_j(t) &= \left|u(x_,t) - u_j(t)\right|\nn
+&= \left|f(x-t)-e^{\hat Pt}\hat f\right|\nn
+&= \left|e^{i\omega(x-t)}-e^{\frac{i}{6h}\left[-\sin(2h\omega)+8\sin(h\omega)\right]t+i\omega x}\right|%check \hat f.
+\end{align}
+
+\end{document}
