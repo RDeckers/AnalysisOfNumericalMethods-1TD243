@@ -1,0 +1,105 @@
+%& -job-name=Assignment1
+\input{../documents-common/preamble.tex}
+\begin{document}
+\maketitle[Assignment 1]{Analysis of Numerical Methods}
+\section{}
+We discretize the first-order spatial derivative using
+\begin{align}
+  \pdrv{u}(x_0, t)= D_0\left(I-\frac{h^2}{6}D_+D_-\right)v.\nn
+\end{align}
+We use $v$ to denote the semi-discrete version of $u$ at an arbitrary gridpoint $x_0$. While $v$ is dependendent upon time we will
+not write down the dependence explicitly txo save space. We use the notation $v_\pm$ to indicate the point to the left and
+right of an arbitrary but fixed point $v$. Multiple pairs of $+$ or $-$ may be used to indicate multiple steps to the left or right.
+\par We know that
+\begin{align}
+  D_0v = \frac{v_+-v_-}{2h},\nn
+  D_+D_-v = \frac{v_+-2v+v_-}{h^2}.
+\end{align}
+Therefore
+\begin{align}
+  \pdrv{u}(x_0, t) = \frac{1}{12h}\left[(v_{++}-v_{--})-8(v_+-v_-)\right]
+\end{align}
+
+\subsection{}
+We have
+\begin{align}
+  \pdrv[t]v = \frac{1}{12h}\left[-(v_{++}-v_{--})+8(v_+-v_-)\right]
+\end{align}
+Which in Fourier space gives
+\begin{align}
+  \pdrv[t]{\hat v} &= \frac{\hat v}{12h}\left[(e^{2h\omega}-e^{-2h\omega})-8(e^{h\omega}-e^{-h\omega})\right],\nn
+  &= \frac{i}{6h}\left[-\sin(2h\omega)+8\sin(h\omega)\right]\hat v\nn
+  &= \hat P \hat v(t)
+\end{align}
+We know that wave speed $V_\omega$ is given by
+\begin{align}
+  V_\omega = \frac{\hat P}{i\omega}
+\end{align}
+therefore
+\begin{align}
+ \Aboxed{V_\omega = \frac{1}{6h\omega}\left[-\sin(2h\omega)+8\sin(h\omega)\right]}
+\end{align}
+\begin{figure}[!hhp]
+\centering
+\input{img/wavespeed.tex}
+\input{img/wavespeedRellErr.tex}
+\caption{The wavespeed and its relative error as a function of $h\omega$ from $0$ to $\pi$.}
+\end{figure}
+
+\subsection{}
+The pointwise error is defined as the absolute difference between the exact continous solution and the exact
+solution to the (semi-)discrete problem. We know the latter to be $\hat f \exp\left(\hat P t\right)$ from the previous exercise
+session, and the former is given to be $f(x-t)$. Thus
+\begin{align}
+\varepsilon_j(t) &= \left|u(x_,t) - v_{x}(t)\right|\nn
+&= \left|f(x-t)-e^{\hat Pt}\hat f\right|\nn
+&= \left|e^{i\omega(x-t)}-e^{\frac{i}{6h}\left[-\sin(2h\omega)+8\sin(h\omega)\right]t+i\omega x}\right|\nn%TODO: check \hat f.
+&= \left|e^{i\omega x}\right|\left|e^{-i\omega t} - e^{\frac{i}{6h}\left[-\sin(2h\omega)+8\sin(h\omega)\right]t}\right|\nn
+&= \left|e^{i\omega x}\right|\left|e^{-i\omega t}\right|\left|1 - e^{it\left(\omega+\frac{1}{6h}\left[-\sin(2h\omega)+8\sin(h\omega)\right]\right)}\right|
+\end{align}
+Since the first term is the only one which depends on $x$ we can always set it to its maximum value of 1. If we let
+\begin{align}
+g = i\omega\left(1+\frac{1}{6h\omega}\left[-\sin(2h\omega)+8\sin(h\omega)\right]\right)
+\end{align}
+We can rewrite $\varepsilon$ as
+\begin{align}
+\varepsilon_j(t) &= \left|e^{-i\omega t}\right|\left|1-e^{gt}\right|\nn
+&\approx \left|e^{-i\omega t}\right|\left|1-1-gt-\O\left(g^2t^2\right)\right|.
+\end{align}
+We can approximate $g$ using a Taylor-expansion of the $\sin$ terms around $h\omega=0$,
+\begin{align}
+g &\approx i\omega\left(1+\frac{1}{6h\omega}\left[8h\omega-\frac{8}{6}h^3\omega^3+\frac{8}{120}h^5\omega^5-2h\omega+\frac{8}{6}h^3\omega^3 - \frac{32}{120}h^5\omega^5 + \O\left(h^7\omega^7\right)\right]\right)\nn
+&\approx \left(2-\frac{h^4\omega^4}{30}\right)i\omega
+\end{align}
+therefore
+\begin{align}
+\varepsilon_j(t) \approx e^{-i\omega t}\left(\frac{h^4\omega^4}{30}-2\right)i\omega t + \O\left(h^7\omega^7+t^2\right)
+\end{align}
+and the leading order (first order) term of the maximum point-wise error is
+\begin{align}
+\Aboxed{e^{-i\omega t}\left(\frac{h^4\omega^4}{30}-2\right)i\omega t}
+\end{align}
+
+\section{}
+First we discretize the spatial derivative using $D_+D_-$, that is
+\begin{align}
+\pdrv[t]{\bar{\vec u}} = AD_+D_-\bar{ \vec u}
+\end{align}
+where $\bar{\vec u}$ is the vector constaining the semidiscrete versions of $u$ and $v$. We now discretize in time as per the Crank-Nicolson scheme,
+\begin{align}
+ &\bar{\vec u}^+ = \bar{\vec u} + \frac{k}{2}\left[AD_+D_-\bar{ \vec u}+AD_+D_-\bar{ \vec u}^+]\nn
+ &\to \left(I-\frac{k}{2}AD_+D_-\right)\bar{ \vec u}^+ = \left(I+\frac{k}{2}AD_+D_-\right)\bar{ \vec u}
+\end{align}
+Where a superscript $\pm$ indicates the next or previous point in time in a similar fashion as a subscript was used to indicate spatial shifts previously.
+We know (from lecture notes 6) that the stability requirement for Crank-Nicolson is
+\begin{align}
+  \left|\frac{1+\frac{k}{2}\lambda}{1-\frac{k}{2}\lambda}\right| \leq 1
+\end{align}
+where $\lambda$ are the eigenvalues of $AD_+D_-$ in this case. For the above expression to hold, the real parts of these have to be less than or equal to zero.
+\par In the fourier domain we can say
+\begin{align}
+ \pdrv[t]{\hat{\bar{\vec u}}} = AD_+D_- \hat{\bar{\vec u}} = -A\frac{4}{h^2}\sin^2\left(\frac{h\omega}{2}\right)\hat{\bar{\vec u}},
+\end{align}
+and because a function is stable in the cartesian domain iff it is stable in the fourier domain (the representations are equivalent) the real part of the eigenvalues of $A$ have to be positive.
+The eigenvalues of $A$ are trivial to compute and are given by $\lambda_{1,2} = 3,1$, therefore the scheme is stable indepent of $k$ (unconditionally stable)\footnote{Except for the logical bounds on $k$ such as it has to be real and positive.}.
+\end{document}
