@@ -37,12 +37,12 @@ We know that wave speed $V_\omega$ is given by
 \end{align}
 therefore
 \begin{align}
- \Aboxed{V_\omega = \frac{1}{6h\omega}\left[-\sin(2h\omega)+8\sin(h\omega)\right]}
+ V_\omega = \frac{1}{6h\omega}\left[-\sin(2h\omega)+8\sin(h\omega)\right]
 \end{align}
 \begin{figure}[!hhp]
 \centering
-\input{img/wavespeed.tex}
-\input{img/wavespeedRellErr.tex}
+%\input{img/wavespeed.tex}
+%\input{img/wavespeedRellErr.tex}
 \caption{The wavespeed and its relative error as a function of $h\omega$ from $0$ to $\pi$.}
 \end{figure}
 
@@ -77,7 +77,7 @@ therefore
 \end{align}
 and the leading order (first order) term of the maximum point-wise error is
 \begin{align}
-\Aboxed{e^{-i\omega t}\left(\frac{h^4\omega^4}{30}-2\right)i\omega t}
+e^{-i\omega t}\left(\frac{h^4\omega^4}{30}-2\right)i\omega t
 \end{align}
 
 \section{}
@@ -87,7 +87,7 @@ First we discretize the spatial derivative using $D_+D_-$, that is
 \end{align}
 where $\bar{\vec u}$ is the vector constaining the semidiscrete versions of $u$ and $v$. We now discretize in time as per the Crank-Nicolson scheme,
 \begin{align}
- &\bar{\vec u}^+ = \bar{\vec u} + \frac{k}{2}\left[AD_+D_-\bar{ \vec u}+AD_+D_-\bar{ \vec u}^+]\nn
+ &\bar{\vec u}^+ = \bar{\vec u} + \frac{k}{2}\left[AD_+D_-\bar{ \vec u}+AD_+D_-\bar{ \vec u}^+\right]\nn
  &\to \left(I-\frac{k}{2}AD_+D_-\right)\bar{ \vec u}^+ = \left(I+\frac{k}{2}AD_+D_-\right)\bar{ \vec u}
 \end{align}
 Where a superscript $\pm$ indicates the next or previous point in time in a similar fashion as a subscript was used to indicate spatial shifts previously.
