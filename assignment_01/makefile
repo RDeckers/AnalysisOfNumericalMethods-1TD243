@@ -22,7 +22,10 @@ all: $(PLOTS_TEX)
 	@echo $(PLOTS_DIR)
 	pdflatex -interaction=nonstopmode main.tex
 clean:
-	$(call RM, *.{out,log,aux,pdf})
-	$(call RM, $(PLOTS_DIR)*.tex)
+	$(call RM, *.out)
+	$(call RM, *.log)
+	$(call RM, *.aux)
+	$(call RM, *.pdf)
+	$(call RM, $(call FIX_PATH, $(PLOTS_DIR)/*.tex))
 $(PLOTS_DIR)/%.tex: $(PLOTS_DIR)/%.plt
 	gnuplot -e "output_file='$@';term_type='latex'" -c "$<"
