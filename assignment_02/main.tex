@@ -1,0 +1,20 @@
+%& -job-name=Assignment2
+\input{../documents-common/preamble.tex}
+\begin{document}
+\maketitle[Assignment 2]{Analysis of Numerical Methods}
+\section{}
+\begin{align}
+\inp{u, u_t} + \inp{u, Au_x} = 0\nn
+\to \frac{1}{2}\drv[t]{}\norm{u}^2 &= -\int_0^1 u^TAu_x\d{x}\nn
+&= -\int_0^1 u_1(x)u_{2,x}(x)\d{x}-\int_0^1 u_2(x)u_{1,x}(x)\d{x}\nn
+&= -u_1(x)u_2(x)\bigg|_0^1+\int_0^1 u_{1,x}(x)u_2(x)\d{x}-\int_0^1 u_2(x)u_{1,x}(x)\d{x}\nn
+&= -u_1(x)u_2(x)\bigg|_0^1\nn
+&= 0
+\end{align}
+Therefore the square of the norm of $u$ is constant, and given by the square norm in the initial condition %order of square?
+\begin{align}
+ \norm{u(\cdot,t)}^2 = \norm{u(\cdot, 0)}^2 = \norm{f(\cdot)}^2 = \inp{f}{f}\nn
+ \to \norm{u(\cdot,t)} = \sqrt{\inp{f}{f}}
+\end{align}
+\section{}
+\end{document}
