@@ -19,5 +19,20 @@ Therefore the square of the norm of $u$ is constant,
 \end{align}
 
 \section{}
+Denote the semi-discrete version of $u$ by $v$, using the SBP operator $D$ for the first derivative we can express it as
+\begin{align}
+v_t = A\otimes Dv  = A\otimes H^{-1}(Q+R)v
+\end{align}
+And denote the discrete-energy method inner-product as
+\begin{align}
+\inp{x}{y}_H = x^T\left(H\otimes I\right)y = x^T\hat H y,
+\end{align}.
+Where $I$ is the $2\times 2$ identity matrix.
+%TODO: text
+\begin{align}
+\inp{v}{v_t} + \inp{v_t}{v} &= \inp{v}{A \otimes Dv} + \inp{A \otimes Dv}{v}\nn
+\drv[t]{}\norm{v}_H^2 &= v^THAH^{-1}(Q+R)v + v^T(Q+R)^TH^{-1}AH v\nn
+&= v^T\left(HAH^{-1}(Q+R)+(Q^T+R^T)H^{-1}AH\right)v
+\end{align}
 
 \end{document}
