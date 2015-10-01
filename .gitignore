@@ -1,3 +1,7 @@
+## Don't track pdf's and plot files
+assignment_??/Assignment?.pdf
+assignment_??/plots/*.tex
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
