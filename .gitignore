@@ -1,5 +1,6 @@
 ## Don't track pdf's and plot files
 assignment_??/Assignment?.pdf
+assignment_??/main.pdf
 assignment_??/plots/*.tex
 
 ## Core latex/pdflatex auxiliary files:
