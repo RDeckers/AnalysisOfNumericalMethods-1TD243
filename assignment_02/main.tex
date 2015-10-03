@@ -25,14 +25,64 @@ v_t = A\otimes Dv  = A\otimes H^{-1}(Q+R)v
 \end{align}
 And denote the discrete-energy method inner-product as
 \begin{align}
-\inp{x}{y}_H = x^T\left(H\otimes I\right)y = x^T\hat H y,
+\inp{x}{y}_H = x^T\left(I\otimes H\right)y = x^T\hat H y,
 \end{align}.
 Where $I$ is the $2\times 2$ identity matrix.
 %TODO: text
+Multiplying our equation by $v^T\hat H$ from the left gives us
 \begin{align}
-\inp{v}{v_t} + \inp{v_t}{v} &= \inp{v}{A \otimes Dv} + \inp{A \otimes Dv}{v}\nn
-\drv[t]{}\norm{v}_H^2 &= v^THAH^{-1}(Q+R)v + v^T(Q+R)^TH^{-1}AH v\nn
-&= v^T\left(HAH^{-1}(Q+R)+(Q^T+R^T)H^{-1}AH\right)v
+\inp{v}{v_t}_{\hat H} &= \inp{v}{A\otimes D v}_{\hat H}\nn{}
+&= v^T\hat HA\otimes Dv\nn
+&= v^T(I\otimes H)(A\otimes D)v\nn
+&= v^T(A\otimes HD)v\nn
+&= v^T(A\otimes (Q+R))v
+\end{align}
+and the transpose gives us
+\begin{align}
+  \inp{v_t}{v}_{\hat H} &= \inp{A\otimes D v}{v}_{\hat H}\nn{}
+  &= \left(A\otimes Dv)^T\hat H v\nn
+  &= v^T(A\otimes D)^T(I\otimes H)v\nn
+  &= v^T\left(A^TI\otimes D^TH\right)v\nn
+  &= v^T\left(A\otimes (Q+R)^TH^{-1}H\right)v
 \end{align}
 
+Summing these two expressions gives us the discrete energy estimate:
+\begin{align}
+\inp{v_t}{v}_{\hat H} + \inp{v}{v_t}_{\hat H} = \drv[t]{} \norm{v}^2_{\hat H} &= v^T\left(A\otimes(Q+Q^T+R+R^T)\right)v\nn
+&= v^T\left(A\otimes \left(R+R^T\right)\right)v\nn
+&= 2\left(v^1_0v^2_0 + v^1_Nv^2_N\right)
+\end{align}
+We now add the SAT terms
+\begin{align}
+  \alpha\otimes H^{-1}e_0\left(e^1\otimes e^T_0\right)v = \alpha\otimes H^{-1}e_0v_0^1\\
+  \beta\otimes H^{-1}e_N\left(e^2\otimes e^T_N\right)v = \beta\otimes H^{-1}e_Nv_N^2
+\end{align}
+where
+\begin{align}
+  e^1 = \left(1, 0\right)\nn
+  e^2 = \left(0, 1\right)
+\end{align}
+and $\alpha$ and $\beta$ are 2D penalty row-vectors.
+Taking the discrete inner-product w.r.t. $\hat H$:
+\begin{align}
+  v^T\left(I_2\otimes H\right)\alpha H^{-1}e_0v_0^1 = \alpha_0\left(v_0^1\right)^2 + \alpha_1\left(v_0^1v_0^2\right)\\
+  v^T\left(I_2\otimes H\right)\beta H^{-1}e_Nv_N^2 = \beta_1\left(v_N^2\right)^2 + \beta_0\left(v_N^1v_N^2\right)
+\end{align}
+and the transpose
+\begin{align}
+\left[\alpha\otimes H^{-1}e_0v_0^1\right]^T\left(I_2\otimes H\right)v &= v_0^1e_0^T\left(\alpha\otimes H^{-1}\right)^T\left(I_2\otimes H\right)v\nn
+&= v_0^1e_0^T\left(\alpha^T\otimes I_N\right)v\nn
+&= v_0^1\left(\alpha_0v_0^1+\alpha_1v_0^2\right)\nn
+&= \alpha_0\left(v_0^1\right)^2+\alpha_1\left(v_0^1v_0^2\right)\\
+\left[\beta\otimes H^{-1}e_Nv_N^2\right]^T\left(I_2\otimes H\right)v &= \beta_1\left(v_N^2\right)^2 + \beta_0\left(v_N^1v_N^2\right)
+\end{align}
+\par Adding everything together we end up with our SBP-SAT energy estimate:
+\begin{align}
+  \frac{1}{2}\drv[t]{} \norm{v}^2_{\hat H} &= v^1_0v^2_0 + v^1_Nv^2_N + \beta_1\left(v_N^2\right)^2 + \beta_0\left(v_N^1v_N^2\right) + \alpha_0\left(v_0^1\right)^2 + \alpha_1\left(v_0^1v_0^2\right)
+\end{align}
+Which leads to a stability condition of
+\begin{align}
+  \beta_0 = \alpha_1 = 0,\nn
+  \beta_1 \leq 0, \alpha_0 \leq 0
+\end{align}
 \end{document}
