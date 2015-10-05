@@ -1,6 +1,6 @@
 function [ ] = compute_order(N_min, N_max, N_logstep)
- reference = create_and_run(N_max*N_logstep, 6, 0.0025);
- ratio =0.0025;
+ reference = create_and_run(N_max*N_logstep, 6, 50);
+ ratio =100;
  X = []
  Y4 = []
  Y6 = []
@@ -14,36 +14,39 @@ function [ ] = compute_order(N_min, N_max, N_logstep)
  plot(x, reference)
  
  while N <= N_max
-     disp(N)
-     X(end+1) = N
-     computed = create_and_run(N, 6, ratio);
-     size(computed)
-     size(reference)
-     step = (N_max*N_logstep)/N;
-     %for i = 1:(N+1)
-      %   computed(i) = computed(i) - reference(step*(i-1)+1);
-%         computed(N+1+i) = computed(N+1+i) - reference(N_max+1+(step*(i-1)+1));
-%     end
-     Y6(end+1) = dot(computed, computed);
-     figure(1)
+     X(end+1) = 1/N
      x= linspace(0,2,2*(N+1));
-     plot(x, computed);
-     computed = create_and_run(N, 4, ratio);
-     size(computed)
+     computed = create_and_run(N, 6, ratio);
      step = (N_max*N_logstep)/N;
-     %for i = 1:(N+1)
-%         computed(i) = computed(i) - reference(step*(i-1)+1);
-%         computed(N+1+i) = computed(N+1+i) - reference(N_max+1+(step*(i-1)+1));
-%     end
-     Y4(end+1) = dot(computed, computed);
+     figure(1)
+     plot(x, computed);
+     for i = 1:(N+1)
+         computed(i) = computed(i) - reference(step*(i-1)+1);
+         computed(N+1+i) = computed(N+1+i) - reference(N_max*N_logstep+1+(step*(i-1)+1));
+     end
+
+     Y6(end+1) = sqrt(dot(computed, computed));
+     computed = create_and_run(N, 4, ratio);
+     step = (N_max*N_logstep)/N;
      figure(2);
      plot(x, computed);
+     for i = 1:(N+1)
+         computed(i) = computed(i) - reference(step*(i-1)+1);
+         computed(N+1+i) = computed(N+1+i) - reference(N_max*N_logstep+1+(step*(i-1)+1));
+     end
+     Y4(end+1) = sqrt(dot(computed, computed));
+     
      N = N*N_logstep;
  end
- %X
- %Y4
- %Y6
- %loglog(X,Y6,X,Y4)
+figure(3)
+X
+Y4
+Y6
+for i = 1:size(X)
+    fourthorder(i) = X(i)^4;
+end
+loglog(X,Y6,X,Y4)
+grid on
 end
 
 %1,      2,      3, 4,      5,      6 //2
