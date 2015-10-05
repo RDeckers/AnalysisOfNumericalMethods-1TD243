@@ -9,6 +9,7 @@
 &= -\int_0^1 u_1(x)u_{2,x}(x)\d{x}-\int_0^1 u_2(x)u_{1,x}(x)\d{x}\nn
 &= -u_1(x)u_2(x)\bigg|_0^1+\int_0^1 u_{1,x}(x)u_2(x)\d{x}-\int_0^1 u_2(x)u_{1,x}(x)\d{x}\nn
 &= -u_1(x)u_2(x)\bigg|_0^1\nn
+&= u_1(0)u_2(0) -u_1(1)u_2(1)
 &= 0
 \end{align}
 Therefore the square of the norm of $u$ is constant,
@@ -21,7 +22,7 @@ Therefore the square of the norm of $u$ is constant,
 \section{}
 Denote the semi-discrete version of $u$ by $v$, using the SBP operator $D$ for the first derivative we can express it as
 \begin{align}
-v_t = A\otimes Dv  = A\otimes H^{-1}(Q+R)v
+v_t = -A\otimes Dv  = -A\otimes H^{-1}(Q+R)v
 \end{align}
 And denote the discrete-energy method inner-product as
 \begin{align}
@@ -31,26 +32,26 @@ Where $I$ is the $2\times 2$ identity matrix.
 %TODO: text
 Multiplying our equation by $v^T\hat H$ from the left gives us
 \begin{align}
-\inp{v}{v_t}_{\hat H} &= \inp{v}{A\otimes D v}_{\hat H}\nn{}
-&= v^T\hat HA\otimes Dv\nn
-&= v^T(I\otimes H)(A\otimes D)v\nn
-&= v^T(A\otimes HD)v\nn
-&= v^T(A\otimes (Q+R))v
+\inp{v}{v_t}_{\hat H} &= \inp{v}{-A\otimes D v}_{\hat H}\nn{}
+&= -v^T\hat HA\otimes Dv\nn
+&= -v^T(I\otimes H)(A\otimes D)v\nn
+&= -v^T(A\otimes HD)v\nn
+&= -v^T(A\otimes (Q+R))v
 \end{align}
 and the transpose gives us
 \begin{align}
-  \inp{v_t}{v}_{\hat H} &= \inp{A\otimes D v}{v}_{\hat H}\nn{}
-  &= \left(A\otimes Dv)^T\hat H v\nn
-  &= v^T(A\otimes D)^T(I\otimes H)v\nn
-  &= v^T\left(A^TI\otimes D^TH\right)v\nn
-  &= v^T\left(A\otimes (Q+R)^TH^{-1}H\right)v
+  \inp{v_t}{v}_{\hat H} &= \inp{-A\otimes D v}{v}_{\hat H}\nn{}
+  &= -\left(A\otimes Dv)^T\hat H v\nn
+  &= -v^T(A\otimes D)^T(I\otimes H)v\nn
+  &= -v^T\left(A^TI\otimes D^TH\right)v\nn
+  &= -v^T\left(A\otimes (Q+R)^TH^{-1}H\right)v
 \end{align}
 
 Summing these two expressions gives us the discrete energy estimate:
 \begin{align}
-\inp{v_t}{v}_{\hat H} + \inp{v}{v_t}_{\hat H} = \drv[t]{} \norm{v}^2_{\hat H} &= v^T\left(A\otimes(Q+Q^T+R+R^T)\right)v\nn
-&= v^T\left(A\otimes \left(R+R^T\right)\right)v\nn
-&= 2\left(v^1_0v^2_0 + v^1_Nv^2_N\right)
+\inp{v_t}{v}_{\hat H} + \inp{v}{v_t}_{\hat H} = \drv[t]{} \norm{v}^2_{\hat H} &= -v^T\left(A\otimes(Q+Q^T+R+R^T)\right)v\nn
+&= -v^T\left(A\otimes \left(R+R^T\right)\right)v\nn  %TODO: Check this
+&= \left(v^1_0v^2_0 - v^1_Nv^2_N\right)
 \end{align}
 We now add the SAT terms
 \begin{align}
@@ -78,11 +79,15 @@ and the transpose
 \end{align}
 \par Adding everything together we end up with our SBP-SAT energy estimate:
 \begin{align}
-  \frac{1}{2}\drv[t]{} \norm{v}^2_{\hat H} &= v^1_0v^2_0 + v^1_Nv^2_N + \beta_1\left(v_N^2\right)^2 + \beta_0\left(v_N^1v_N^2\right) + \alpha_0\left(v_0^1\right)^2 + \alpha_1\left(v_0^1v_0^2\right)
+
+  \drv[t]{} \norm{v}^2_{\hat H} &=  v^1_0v^2_0 - v^1_Nv^2_N +   2\beta_1\left(v_N^2\right)^2 + 2\beta_0\left(v_N^1v_N^2\right) + 2\alpha_0\left(v_0^1\right)^2 + 2\alpha_1\left(v_0^1v_0^2\right)
 \end{align}
 Which leads to a stability condition of
 \begin{align}
-  \beta_0 = \alpha_1 = 0,\nn
-  \beta_1 \leq 0, \alpha_0 \leq 0
+  \beta_0 = \frac{1}{2},\;\alpha_1 = -\frac{1}{2},\nn
+  \beta_1 \leq 0,\;\alpha_0 \leq 0
 \end{align}
+Setting $\beta_1 = \alpha_0 = 0$ guarentees we have energy conservation, similar to what we found in the exact case.
+\section{}
+
 \end{document}
