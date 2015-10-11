@@ -88,18 +88,22 @@ Which leads to a stability condition of
 \end{align}
 Setting $\beta_1 = \alpha_0 = 0$ guarentees we have energy conservation, similar to what we found in the exact case.
 \section{}
-We do not obtain the expected convergence rate, we would expect to see something between the method order and the method order$/2 +1$
-but we find an order of roughly $0.5$ for both methods. This is probably due to a software bug but we have been unable to trace it down in time.
-We do observe energy conservation as expected.
+We calculated the convergence rates using a reference solution for 2nd, 4th and 6th order methods. As expected, we do no get the
+exact same convergence rates due to the boundary conditions (except for the 2nd order method). We find order 2, 3, and 4 respectively corresponding to
+method order$/2 + 1$. We used $\beta_1 = \alpha_0 = -1$ and $h/k = 500$.
+\par our results are plotted in the following graphs.
 \begin{figure}
   \centering
-  \caption{Convergence graph, gray = $\O(h^{0.5})$, orange = `sixth-order', blue = `fourth-order'.}
  \includegraphics[width=0.75\textwidth]{plots/convergence}
+ \caption{Convergence graph of methods labeled with their maximum interior convergence rates.
+ the black lines correspond to 2nd, 3rd and 4th order convergence rates.}
 \end{figure}
 \begin{figure}
 \centering
-\caption{Final results for various $h$ with $k/h = c$ and `order' six. Note the horizontal shifting.}
 \includegraphics[width=0.75\textwidth]{plots/6th_order.png}
+\caption{Final results for various $h$ with $k/h = 500$ and `order' six.}
+\includegraphics[width=0.75\textwidth]{plots/4th_order.png}
+\caption{Final results for various $h$ with $k/h = 500$ and `order' four.}
 \end{figure}
 
 \end{document}

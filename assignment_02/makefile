@@ -18,12 +18,12 @@ endif
 PROJECT_DIR :=$(call FIX_PATH,$(dir $(realpath $(lastword $(MAKEFILE_LIST)))))
 PLOTS_DIR :=$(PROJECT_DIR)plots/
 PLOTS_PLT :=$(call rwildcard,$(PLOTS_DIR),*.plt)
-PLOTS_TEX :=$(patsubst %.plt,%.tex,$(PLOTS_PLT))
+PLOTS_PNG :=$(patsubst %.plt,%.png,$(PLOTS_PLT))
 PLOTS_DIR :=$(call FIX_PATH, $(PLOTS_DIR))
 PLOTS_PLT :=$(call FIX_PATH, $(PLOTS_PLT))
-PLOTS_TEX :=$(call FIX_PATH, $(PLOTS_TEX))
+PLOTS_PNG :=$(call FIX_PATH, $(PLOTS_PNG))
 
-all: $(PLOTS_TEX)
+all: $(PLOTS_PNG)
 	pdflatex -interaction=nonstopmode $(PROJECT_DIR)main.tex
 clean:
 	$(call RM,$(PROJECT_DIR)*.out)
@@ -32,5 +32,5 @@ clean:
 	$(call RM,$(PROJECT_DIR)*.pdf)
 	$(call RM,$(PLOTS_DIR)*.tex)
 
-$(call FIX_PATH,$(PLOTS_DIR)/)%.tex: $(call FIX_PATH, $(PLOTS_DIR)/)%.plt
-	gnuplot -e "output_file='$@';term_type='latex'" -c "$<"
+$(call FIX_PATH,$(PLOTS_DIR)/)%.png: $(call FIX_PATH, $(PLOTS_DIR)/)%.plt
+	gnuplot -e "output_file='$@';term_type='pngcairo'" -c "$<"

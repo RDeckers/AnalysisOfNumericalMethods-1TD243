@@ -1,17 +1,18 @@
 function [ ] = compute_order(N_min, N_max, N_logstep)
  reference = create_and_run(N_max*N_logstep, 6, 50);
- ratio =100;
+ ratio =500;
  X = []
+ Y2 = []
  Y4 = []
  Y6 = []
  N = N_min
  x= linspace(0,2,2*(N_max*N_logstep+1));
  figure(1);
  hold on;
- plot(x, reference)
+ %plot(x, reference)
  figure(2);
  hold on;
- plot(x, reference)
+ %plot(x, reference)
  
  while N <= N_max
      X(end+1) = 1/N
@@ -19,34 +20,52 @@ function [ ] = compute_order(N_min, N_max, N_logstep)
      computed = create_and_run(N, 6, ratio);
      step = (N_max*N_logstep)/N;
      figure(1)
+     
      plot(x, computed);
      for i = 1:(N+1)
          computed(i) = computed(i) - reference(step*(i-1)+1);
          computed(N+1+i) = computed(N+1+i) - reference(N_max*N_logstep+1+(step*(i-1)+1));
-     end
-
-     Y6(end+1) = sqrt(dot(computed, computed));
+     end     
+     
+     Y6(end+1) = sqrt(dot(computed, computed)*(x(2)-x(1)));
+     
      computed = create_and_run(N, 4, ratio);
      step = (N_max*N_logstep)/N;
      figure(2);
+     
      plot(x, computed);
      for i = 1:(N+1)
          computed(i) = computed(i) - reference(step*(i-1)+1);
          computed(N+1+i) = computed(N+1+i) - reference(N_max*N_logstep+1+(step*(i-1)+1));
      end
-     Y4(end+1) = sqrt(dot(computed, computed));
+     
+     
+     Y4(end+1) = sqrt(dot(computed, computed)*(x(2)-x(1)));
+     
+     computed = create_and_run(N, 2, ratio);
+     step = (N_max*N_logstep)/N;
+     for i = 1:(N+1)
+         computed(i) = computed(i) - reference(step*(i-1)+1);
+         computed(N+1+i) = computed(N+1+i) - reference(N_max*N_logstep+1+(step*(i-1)+1));
+     end
+     Y2(end+1) = sqrt(dot(computed, computed)*(x(2)-x(1)));
      
      N = N*N_logstep;
  end
 figure(3)
+format shortG
 X
 Y4
 Y6
 for i = 1:size(X)
     fourthorder(i) = X(i)^4;
 end
-loglog(X,Y6,X,Y4)
+loglog(X,Y6,X,Y4,X,Y2)
 grid on
+
+csvwrite('convergence.csv', [X; Y2; Y4; Y6].');
+
+
 end
 
 %1,      2,      3, 4,      5,      6 //2
